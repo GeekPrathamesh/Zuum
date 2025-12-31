@@ -51,11 +51,11 @@ app.use("/api/messages",messageRouter);
 
 
 //connect to database
+await connectDB();
 
 if(process.env.NODE_ENV!=="PRODUCTION"){
 
   const PORT = process.env.PORT || 7000;
-  connectDB();
   server.listen(PORT,()=>{
       console.log("server is running on PORT :",PORT);
       
