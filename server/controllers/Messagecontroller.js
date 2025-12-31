@@ -37,13 +37,13 @@ export const getMessagesselecteduser = async (req, res) => {
     const myId = req.user._id;
     const messages = await Message.find({
       $or: [
-        { sendorId: myId, receiverId: selectedId },
-        { sendorId: selectedId, receiverId: myId },
+        { senderId: myId, receiverId: selectedId },
+        { senderId: selectedId, receiverId: myId },
       ],
     });
 
     await Message.updateMany(
-      { sendorId: selectedId, receiverId: myId },
+      { senderId: selectedId, receiverId: myId },
       { seen: true }
     );
     res.json({ success: true, messages });
@@ -73,7 +73,7 @@ export const sendMessage = async (req, res) => {
   try {
     const {text,image}=req.body;
     const receiverId = req.params.id;
-    const sendorId=req.user._id;
+    const senderId=req.user._id;
 
     let imageUrl ;
     if(image){

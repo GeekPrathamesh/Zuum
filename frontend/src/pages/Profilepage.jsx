@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import assets from "../assets/assets";
+import { Authcontext } from "../context/Authcontext";
 
 const Profilepage = () => {
+  const { updateProfile, authUser } = useContext(Authcontext);
 
-  const [selectedImage,setselectedImage]=useState(null);
+  const [selectedImage, setselectedImage] = useState(null);
   const navigate = useNavigate();
-  const [name,setname] = useState("Raj Mayekar");
-  const [bio,setbio] = useState("hey there lets chat");
+  const [name, setname] = useState(authUser.fullName);
+  const [bio, setbio] = useState(authUser.bio);
 
-  const handleSubmit=async(e)=>{
-e.preventDefault();
-navigate("/")
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedImage) {
+      await updateProfile({ fullName: name, bio });
+      navigate("/");
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedImage);
+    reader.onload = async () => {
+      const base64Image = reader.result;
+      await updateProfile({ profilePic: base64Image, fullName: name, bio });
+      navigate("/");
+    };
+  };
 
   return (
     <div className="min-h-screen bg-cover bg-no-repeat flex items-center justify-center">
@@ -23,20 +36,65 @@ navigate("/")
             htmlFor="avatar"
             className="flex items-center gap-3 cursor-pointer"
           >
-            <input onChange={(e)=>setselectedImage(e.target.files[0])} type="file" id="avatar" accept=".png,.jpeg,.jpg" hidden />
-            <img src={selectedImage?URL.createObjectURL(selectedImage):assets.avatar_icon} alt="" className={`w-12 h-12 ${selectedImage && "rounded-full"}`} /> upload the profile image
+            <input
+              onChange={(e) => setselectedImage(e.target.files[0])}
+              type="file"
+              id="avatar"
+              accept=".png,.jpeg,.jpg"
+              hidden
+            />
+<div className="w-12 h-12 rounded-full overflow-hidden bg-gray-700">
+  <img
+    src={
+      selectedImage
+        ? URL.createObjectURL(selectedImage)
+        : assets.avatar_icon
+    }
+    alt=""
+    className="w-full h-full object-cover object-center"
+  />
+</div>
+
+            upload the profile image
           </label>
-          <input onChange={(e)=>setname(e.target.value)} value={name} type="text" required placeholder="your name" className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500" />
-          <textarea onChange={(e)=>setbio(e.target.value)} value={bio} placeholder="write profile bio" required className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500" rows={4}></textarea>
+          <input
+            onChange={(e) => setname(e.target.value)}
+            value={name}
+            type="text"
+            required
+            placeholder="your name"
+            className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+          />
+          <textarea
+            onChange={(e) => setbio(e.target.value)}
+            value={bio}
+            placeholder="write profile bio"
+            required
+            className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+            rows={4}
+          ></textarea>
           <button
-            type="submit" onClick={handleSubmit}
+            type="submit"
+            onClick={handleSubmit}
             className="bg-gradient-to-r from-purple-400 to-violet-600 text-white p-2 rounded-full text-lg cursor-pointer"
           >
             Save
           </button>
-
         </form>
-        <img src={assets.logo_icon} className="max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10  " alt="" />
+<div className="w-44 h-44 mx-10 max-sm:mt-10 rounded-full overflow-hidden bg-gray-700">
+  <img
+    src={authUser.profilePic || assets.logo_icon}
+    alt="Profile picture"
+    className="w-full h-full object-cover object-center cursor-pointer"
+    onClick={() => {
+      if (authUser?.profilePic) {
+        window.open(authUser.profilePic, "_blank");
+      }
+    }}
+  />
+</div>
+
+
       </div>
     </div>
   );

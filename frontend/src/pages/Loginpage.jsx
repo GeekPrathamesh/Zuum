@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import assets from "../assets/assets";
+import { Authcontext } from "../context/Authcontext";
 
 const Loginpage = () => {
   const [isSignup, setIsSignup] = useState(false);
@@ -10,7 +11,9 @@ const Loginpage = () => {
   const [password, setPassword] = useState("");
   const [bio, setBio] = useState("");
 
-  const handleSubmit = (e) => {
+  const {login} = useContext(Authcontext);
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     // If signup → move to bio step
@@ -19,14 +22,14 @@ const Loginpage = () => {
       return;
     }
 
-    // else login logic
+   await login("login",{email,password});
   };
 
-  const handleBioSubmit = (e) => {
+  const handleBioSubmit = async(e) => {
     e.preventDefault();
 
-    // send name, email, password, bio to backend
-    console.log({ name, email, password, bio });
+       await login("signup",{fullName:name,email,password,bio});
+
   };
 
   return (
