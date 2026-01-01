@@ -52,31 +52,6 @@ The frontend is built with React, while the backend uses Node.js, Express, and S
 
 ---
 
-## Project Structure
-
-ZUUM
-├── frontend
-│ ├── src
-│ │ ├── components
-│ │ ├── context
-│ │ ├── pages
-│ │ ├── lib
-│ │ ├── App.jsx
-│ │ └── main.jsx
-│ ├── index.html
-│ └── vite.config.js
-│
-├── server
-│ ├── controllers
-│ ├── models
-│ ├── routes
-│ ├── lib
-│ └── server.js
-
-yaml
-Copy code
-
----
 
 ## Real-Time Architecture
 
@@ -125,47 +100,24 @@ Copy code
 ## Run Locally
 
 ### Backend
-```bash
+
 cd server
 npm install
 npm run dev
 Frontend
 bash
-Copy code
+
+### Frontend
+
 cd frontend
 npm install
 npm run dev
 Future Improvements
 Group chats
 
-Typing indicators
-
-Message reactions
-
-Read receipts
-
-Push notifications
 
 Author
 Prathamesh Teli
 LinkedIn: https://www.linkedin.com/in/geekprathamesh
 GitHub: https://github.com/GeekPrathamesh
 
-markdown
-Copy code
-
----
-
-### ✅ This README is:
-- Minimal
-- Professional
-- Recruiter-friendly
-- Honest
-- Copy–paste ready
-
-If you want next:
-- README for **Sketchy-AI**
-- README for **Food Delivery App**
-- GitHub profile audit (what recruiters notice first)
-
-Just tell me 👍
